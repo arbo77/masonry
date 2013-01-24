@@ -465,7 +465,10 @@
   // A bit from jcarousel 
   //   https://github.com/jsor/jcarousel/blob/master/lib/jquery.jcarousel.js
 
-  $.fn.masonry = function( options ) {
+  // @arbo77 on 2013/01/25 02:29:04 
+  // - adding callback arguments 
+  // - adding autoResizeParent (boolean) options    
+  $.fn.masonry = function( options, callback ) {
     if ( typeof options === 'string' ) {
       // call method
       var args = Array.prototype.slice.call( arguments, 1 );
@@ -497,6 +500,18 @@
         }
       });
     }
+    
+    // check if autoResizeParent and columnWidth defined
+    if( options.autoResizeParent === true && options.columnWidth ){
+		// adjust parent width
+		var aw = (Math.floor($(this).width()/options.columnWidth)*options.columnWidth)-8;
+		$(this).width(aw);
+	}
+	// execute callback after arrange
+    if ( typeof callback === 'function' ){
+		callback($(this));
+	}
+	
     return this;
   };
 
